@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace FirstDotNetWebApp.Models
+namespace MvcMovie.Models
 {
     public class Movie
     {

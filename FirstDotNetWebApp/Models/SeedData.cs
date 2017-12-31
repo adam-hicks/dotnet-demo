@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
-namespace FirstDotNetWebApp.Models
+namespace MvcMovie.Models
 {
     public static class SeedData
     {

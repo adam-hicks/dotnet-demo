@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using FirstDotNetWebApp.Models;
+using MvcMovie.Models;
 
-namespace FirstDotNetWebApp
+namespace MvcMovie
 {
     public class Startup
     {

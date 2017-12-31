@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace FirstDotNetWebApp.Models
+namespace MvcMovie.Models
 {
     public class FirstDotNetWebAppContext : DbContext
     {
@@ -9,6 +9,6 @@ namespace FirstDotNetWebApp.Models
         {
         }
 
-        public DbSet<FirstDotNetWebApp.Models.Movie> Movie { get; set; }
+        public DbSet<MvcMovie.Models.Movie> Movie { get; set; }
     }
 }

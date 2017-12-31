@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FirstDotNetWebApp.Migrations
+namespace MvcMovie.Migrations
 {
     public partial class InitialCreate : Migration
     {
