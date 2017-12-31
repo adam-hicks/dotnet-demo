@@ -19,8 +19,14 @@ namespace FirstDotNetWebApp.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index(string searchString)
+        // Requires using Microsoft.AspNetCore.Mvc.Rendering;
+        public async Task<IActionResult> Index(string movieGenre, string searchString)
         {
+            // Use LINQ to get list of genres.
+            IQueryable<string> genreQuery = from m in _context.Movie
+                                            orderby m.Genre
+                                            select m.Genre;
+
             var movies = from m in _context.Movie
                          select m;
 
@@ -29,7 +35,16 @@ namespace FirstDotNetWebApp.Controllers
                 movies = movies.Where(s => s.Title.Contains(searchString));
             }
 
-            return View(await movies.ToListAsync());
+            if (!String.IsNullOrEmpty(movieGenre))
+            {
+                movies = movies.Where(x => x.Genre == movieGenre);
+            }
+
+            var movieGenreVM = new MovieGenreViewModel();
+            movieGenreVM.genres = new SelectList(await genreQuery.Distinct().ToListAsync());
+            movieGenreVM.movies = await movies.ToListAsync();
+
+            return View(movieGenreVM);
         }
 
         // GET: Movies/Details/5
