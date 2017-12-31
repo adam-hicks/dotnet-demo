@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MvcMovie.Models
 {
-    public class FirstDotNetWebAppContext : DbContext
+    public class MvcMovieContext : DbContext
     {
-        public FirstDotNetWebAppContext (DbContextOptions<FirstDotNetWebAppContext> options)
+        public MvcMovieContext (DbContextOptions<MvcMovieContext> options)
             : base(options)
         {
         }

@@ -11,9 +11,9 @@ namespace MvcMovie.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly FirstDotNetWebAppContext _context;
+        private readonly MvcMovieContext _context;
 
-        public MoviesController(FirstDotNetWebAppContext context)
+        public MoviesController(MvcMovieContext context)
         {
             _context = context;
         }
