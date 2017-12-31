@@ -7,6 +7,8 @@ namespace FirstDotNetWebApp.Models
     {
         public int ID { get; set; }
         public string Title { get; set; }
+
+        [DisplayAttribute(Name = "Release Year")]
         [DisplayFormat(DataFormatString = "{0:yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ReleaseDate { get; set; }
         public string Genre { get; set; }
