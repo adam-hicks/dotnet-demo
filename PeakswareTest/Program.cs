@@ -1,5 +1,5 @@
 ﻿using System;
-using PeakswareTest.Models;
+using PeakswareTest.Controllers;
 
 namespace PeakswareTest
 {
@@ -7,14 +7,7 @@ namespace PeakswareTest
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("TrainingPeaks C# Code Test");
-
-            if (args.Length != 1)
-            {
-                Console.WriteLine("Usage: PeakswareTest.exe <filename>");
-                return;
-            }
-            WorkoutModel.importData(args[0]);
+            new WorkoutAnalyzerController().run();
         }
     }
 }
