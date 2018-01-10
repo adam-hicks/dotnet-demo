@@ -1,0 +1,10 @@
+/Users/adamhicks/Programming/dotnet_demo/FirstDotNetWebApp/bin/Debug/netcoreapp2.0/FirstDotNetWebApp.deps.json
+/Users/adamhicks/Programming/dotnet_demo/FirstDotNetWebApp/bin/Debug/netcoreapp2.0/FirstDotNetWebApp.runtimeconfig.json
+/Users/adamhicks/Programming/dotnet_demo/FirstDotNetWebApp/bin/Debug/netcoreapp2.0/FirstDotNetWebApp.runtimeconfig.dev.json
+/Users/adamhicks/Programming/dotnet_demo/FirstDotNetWebApp/bin/Debug/netcoreapp2.0/FirstDotNetWebApp.dll
+/Users/adamhicks/Programming/dotnet_demo/FirstDotNetWebApp/bin/Debug/netcoreapp2.0/FirstDotNetWebApp.pdb
+/Users/adamhicks/Programming/dotnet_demo/FirstDotNetWebApp/obj/Debug/netcoreapp2.0/FirstDotNetWebApp.csproj.CoreCompileInputs.cache
+/Users/adamhicks/Programming/dotnet_demo/FirstDotNetWebApp/obj/Debug/netcoreapp2.0/FirstDotNetWebApp.AssemblyInfoInputs.cache
+/Users/adamhicks/Programming/dotnet_demo/FirstDotNetWebApp/obj/Debug/netcoreapp2.0/FirstDotNetWebApp.AssemblyInfo.cs
+/Users/adamhicks/Programming/dotnet_demo/FirstDotNetWebApp/obj/Debug/netcoreapp2.0/FirstDotNetWebApp.dll
+/Users/adamhicks/Programming/dotnet_demo/FirstDotNetWebApp/obj/Debug/netcoreapp2.0/FirstDotNetWebApp.pdb
