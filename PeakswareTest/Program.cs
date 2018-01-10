@@ -1,5 +1,4 @@
-﻿using System;
-using PeakswareTest.Controllers;
+﻿using PeakswareTest.Controllers;
 
 namespace PeakswareTest
 {

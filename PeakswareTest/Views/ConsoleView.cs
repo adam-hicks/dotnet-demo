@@ -13,5 +13,13 @@ namespace PeakswareTest.Views
             Console.WriteLine("Opening {0}", inputFile);
             return inputFile;
         }
+
+        public static void reportEfforts(Dictionary<int, double> efforts)
+        {
+            foreach (KeyValuePair<int, double> effort in efforts)
+            {
+                Console.WriteLine("Best effor for {0} minutes during this ride was: {1} Watts!", effort.Key, effort.Value);
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using PeakswareTest.Models;
+using PeakswareTest.DAO;
 using PeakswareTest.Views;
+using PeakswareTest.DTO;
 
 namespace PeakswareTest.Controllers
 
@@ -13,7 +14,8 @@ namespace PeakswareTest.Controllers
             // Greet user and ask for filename
             string inputFile = ConsoleView.getFileName();
             // create data model using filename
-            WorkoutModel.importData(inputFile);
+            WorkoutDto workout = new WorkoutDto();
+            workout.dataChannels = WorkoutDataDao.importData(inputFile);
             // find max effort
             //int effortTimeMinutes = 20;
             //summary.findMaxEffort(effortTimeMinutes);

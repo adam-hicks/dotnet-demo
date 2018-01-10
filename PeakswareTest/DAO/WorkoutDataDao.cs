@@ -2,22 +2,22 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using Dynastream.Fit;
+using PeakswareTest.DTO;
 
-namespace PeakswareTest.Models
+namespace PeakswareTest.DAO
 {
-    public class WorkoutModel
+    public class WorkoutDataDao
     {
-        private static Dictionary<double, ushort> _powerChannel;
+        private static Dictionary<string, IDataChannel> _dataChannels;
         private static System.DateTime? _start;
 
-        public static void importData(string filename)
+        public static Dictionary<string, IDataChannel> importData(string filename)
         {
             // Attempt to open .FIT file
             using (var fitSource = new FileStream(filename, FileMode.Open))
             {
                 Console.WriteLine("Opening {0}", filename);
-
-                _powerChannel = new Dictionary<double, ushort>();
+                initializeDataChannels();
 
                 Decode decodeDemo = new Decode();
                 MesgBroadcaster mesgBroadcaster = new MesgBroadcaster();
@@ -33,18 +33,22 @@ namespace PeakswareTest.Models
                 // Process the file
                 if (status)
                 {
-                    Console.WriteLine("Decoding...");
                     decodeDemo.Read(fitSource);
-
-                    Console.WriteLine("Decoded FIT file {0}", filename
-    );
                 }
                 else
                 {
-                    Console.WriteLine("Integrity Check Failed {0}", filename
-    );
+                    throw new Exception(".fit data could not be read from selected file");
                 }
             }
+            return _dataChannels;
+        }
+
+        private static void initializeDataChannels()
+        {
+            _dataChannels = new Dictionary<string, IDataChannel>();
+            IDataChannel powerChannel = new PowerDataChannel();
+            powerChannel.setData(new Dictionary<double, ushort>());
+            _dataChannels.Add("Power", powerChannel);
         }
 
         static void OnRecordMesg(object sender, MesgEventArgs e)
@@ -55,7 +59,7 @@ namespace PeakswareTest.Models
 
             if (power != null)
             {
-                _powerChannel.Add(GetTimeOffset(record.GetTimestamp().GetDateTime()), (ushort)power);
+                _dataChannels["Power"].getData().Add(GetTimeOffset(record.GetTimestamp().GetDateTime()), (ushort)power);
             }
         }
 
