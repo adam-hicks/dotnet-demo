@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using FirstDotNetWebApp.Models;
+using MvcMovie.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace FirstDotNetWebApp
+namespace MvcMovie
 {
     public class Program
     {

@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FirstDotNetWebApp.Models;
+using MvcMovie.Models;
 
-namespace FirstDotNetWebApp.Controllers
+namespace MvcMovie.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly FirstDotNetWebAppContext _context;
+        private readonly MvcMovieContext _context;
 
-        public MoviesController(FirstDotNetWebAppContext context)
+        public MoviesController(MvcMovieContext context)
         {
             _context = context;
         }

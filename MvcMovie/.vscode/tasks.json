@@ -7,7 +7,7 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}/FirstDotNetWebApp.csproj"
+                "${workspaceRoot}/MvcMovie.csproj"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"
