@@ -7,7 +7,7 @@ namespace PeakswareTest.DTO
     public class PowerDataChannel : IDataChannel
     {
         public Dictionary<double, ushort> data;
-        public Dictionary<int, double> maxEfforts { get; set; }
+        public Dictionary<int, double> maxEfforts = new Dictionary<int, double>();
         public void calculateAllEfforts()
         {
             int[] timesOfInterestMinutes = { 1, 5, 10, 15, 20 };
@@ -44,13 +44,18 @@ namespace PeakswareTest.DTO
                     powerSum -= powerQueue.Dequeue();
                     timeQueue.Dequeue();
                 }
-
             }
+            maxEfforts.Add(effortTimeMinutes, maxPowerSum / powerSumDatums);
         }
 
         public Dictionary<double, ushort> getData()
         {
             return data;
+        }
+
+        public Dictionary<int, double> getMaxEfforts()
+        {
+            return maxEfforts;
         }
 
         public void setData(Dictionary<double, ushort> rawData)

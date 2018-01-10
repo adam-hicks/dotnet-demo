@@ -13,14 +13,14 @@ namespace PeakswareTest.Controllers
         {
             // Greet user and ask for filename
             string inputFile = ConsoleView.getFileName();
-            // create data model using filename
+            // Instantiate new workout model to hold results for the specific workout to be imported
             WorkoutDto workout = new WorkoutDto();
-            workout.dataChannels = WorkoutDataDao.importData(inputFile);
-            // find max effort
-            //int effortTimeMinutes = 20;
-            //summary.findMaxEffort(effortTimeMinutes);
-            // add amx effort to workout summary
-            // report summary to user
+            // Retrieve workout data from fit file and store in data channels within the workout DTO. This could be modified to retrieve user-specified channels if available.
+            workout.dataChannels = FitImportDao.importData(inputFile);
+            // Find max efforts. This could be modified to allow the user to input or select the effort durations they are interested in.
+            workout.dataChannels["Power"].calculateAllEfforts();
+            // Report summary to user. If the view was reporting more information, the entire workout DTO might be passed to the view. Here, I only pass the relevant dictionary for efficiency.
+            ConsoleView.reportEfforts(workout.getMaxEffortsForChannel("Power"));
         }
     }
 }

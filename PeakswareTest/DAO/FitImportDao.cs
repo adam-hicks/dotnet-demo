@@ -6,7 +6,7 @@ using PeakswareTest.DTO;
 
 namespace PeakswareTest.DAO
 {
-    public class WorkoutDataDao
+    public class FitImportDao
     {
         private static Dictionary<string, IDataChannel> _dataChannels;
         private static System.DateTime? _start;
