@@ -7,7 +7,7 @@ namespace PeakswareTest.DTO
     {
         public Dictionary<string, IDataChannel> dataChannels { get; set; }
 
-        internal Dictionary<int, double> getMaxEffortsForChannel(string channelKey)
+        internal Dictionary<int, int> getMaxEffortsForChannel(string channelKey)
         {
             if(dataChannels.ContainsKey(channelKey)){
                 return (dataChannels[channelKey]).getMaxEfforts();
