@@ -15,7 +15,8 @@ namespace PeakswareTest.Data
         public static Workout ImportData(string filename)
         {
             // Attempt to open .FIT file
-            if (!System.IO.File.Exists(filename)){
+            if (!System.IO.File.Exists(filename))
+            {
                 return null;
             }
             using (var fitSource = new FileStream(filename, FileMode.Open))

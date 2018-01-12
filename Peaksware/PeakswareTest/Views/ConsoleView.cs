@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PeakswareTest.Models;
 
 namespace PeakswareTest.Views
 {
@@ -26,6 +27,7 @@ namespace PeakswareTest.Views
         {
             if (inputFile.Equals(""))
             {
+                Console.WriteLine("Using files/2012-05-31-11-17-12.fit...");
                 return "files/2012-05-31-11-17-12.fit";
             }
             else if (inputFile.Equals("Q") || inputFile.Equals("q"))
@@ -44,11 +46,27 @@ namespace PeakswareTest.Views
             Console.WriteLine(msg);
         }
 
-        public static void ReportEfforts(Dictionary<int, int> efforts)
+        public static void ReportEfforts(DataChannel dataChannel)
         {
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + dataChannel.DataType + "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Dictionary<int, int> efforts = dataChannel.MaxEfforts;
+            string msg = GetMsg(dataChannel.DataType);
             foreach (KeyValuePair<int, int> effort in efforts)
             {
-                Console.WriteLine("Best effort for {0} minutes during this ride was: {1} Watts!", effort.Key, effort.Value);
+                Console.WriteLine(msg, effort.Key, effort.Value);
+            }
+        }
+
+        private static string GetMsg(string dataType)
+        {
+            switch (dataType)
+            {
+                case "Power":
+                    return "Best effort for {0} minutes during this ride was: {1} Watts!";
+                case "HeartRate":
+                    return "Max {0} minute heart rate for this ride was {1} BPM.";
+                default:
+                    return "Data channel name " + dataType + " not valid.";
             }
         }
     }

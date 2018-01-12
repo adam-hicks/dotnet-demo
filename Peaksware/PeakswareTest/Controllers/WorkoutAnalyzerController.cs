@@ -16,10 +16,15 @@ namespace PeakswareTest.Controllers
             Workout workout = RetrieveData();
             if (workout != null)
             {
-                System.Predicate<DataChannel> powerDataType = channel => channel.DataType.Equals("Power");
-                DataChannel powerDataChannel = workout.DataChannels.Find(powerDataType);
-                powerDataChannel.MaxEfforts = new DataChannelStatsCalculator(workout.DataChannels.Find(channel => channel.DataType.Equals("Power")).Data).CalculateAllEfforts();
-                ConsoleView.ReportEfforts(powerDataChannel.MaxEfforts);
+                string[] channelTypes = { "Power", "HeartRate" };
+                foreach (string channelType in channelTypes)
+                {
+                    System.Predicate<DataChannel> dataTypeFilter = channel => channel.DataType.Equals(channelType);
+                    DataChannel dataChannel = workout.DataChannels.Find(dataTypeFilter);
+                    dataChannel.MaxEfforts = new DataChannelStatsCalculator(dataChannel.Data).CalculateAllEfforts();
+                    ConsoleView.ReportEfforts(dataChannel);
+                }
+
             }
             else { ConsoleView.Print("Exiting..."); }
 
@@ -39,7 +44,7 @@ namespace PeakswareTest.Controllers
                 }
                 workout = FitImport.ImportData(inputFile);
                 msg = "Specified file could not be read. Please try again: ";
-            } while (workout != null);
+            } while (workout == null);
             return workout;
         }
     }
