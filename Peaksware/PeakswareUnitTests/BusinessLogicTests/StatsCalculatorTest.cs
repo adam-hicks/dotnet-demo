@@ -22,7 +22,7 @@ namespace Tests
         [Test]
         public void TestDataIsSeeded()
         {
-            CollectionAssert.IsNotEmpty(calculator.getData());
+            CollectionAssert.IsNotEmpty(calculator.GetData());
         }
 
         [Test]

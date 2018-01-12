@@ -7,10 +7,10 @@ namespace PeakswareTest.Business_Logic
 {
     public class DataChannelStatsCalculator
     {
-        private static Dictionary<double, int> data;
+        private static Dictionary<double, double> data;
         private static Dictionary<int, int> maxEfforts;
 
-        public DataChannelStatsCalculator(Dictionary<double, int> inputData)
+        public DataChannelStatsCalculator(Dictionary<double, double> inputData)
         {
             data = inputData;
             maxEfforts = new Dictionary<int, int>();
@@ -28,7 +28,7 @@ namespace PeakswareTest.Business_Logic
             return maxEfforts;
         }
 
-        public Dictionary<double, int> getData()
+        public Dictionary<double, double> GetData()
         {
             return data;
         }
@@ -38,11 +38,11 @@ namespace PeakswareTest.Business_Logic
             int millisecondsPerMinute = 60 * 1000;
             int expectedWindowMillis = effortTimeMinutes * millisecondsPerMinute;
             Queue<double> timeQueue = new Queue<double>();
-            Queue<int> dataValueQueue = new Queue<int>();
+            Queue<double> dataValueQueue = new Queue<double>();
             double maxDataSum = 0;
             double currentDataSum = 0;
             int dataSumDatums = 0;
-            foreach (KeyValuePair<double, int> powerReading in data)
+            foreach (KeyValuePair<double, double> powerReading in data)
             {
                 timeQueue.Enqueue(powerReading.Key);
                 dataValueQueue.Enqueue(powerReading.Value);

@@ -10,10 +10,10 @@ namespace PeakswareTest.Data
     {
         private static readonly double SPEED_MPH_FROM_MPS = 2.24;
         private static readonly double DISTANCE_METERS_TO_MILES = .0006214;
+
         static Dictionary<ushort, int> mesgCounts = new Dictionary<ushort, int>();
         private static List<DataChannel> dataChannels;
         private static System.DateTime? _start;
-        private static string[] channelsOfInterest = { "Power", "HeartRate", "Cadence" };
 
         public static readonly double DISTANCE_METERS_TO_FEET = 3.281;
 
@@ -26,8 +26,6 @@ namespace PeakswareTest.Data
             }
             using (var fitSource = new FileStream(filename, FileMode.Open))
             {
-                InitializeDataChannels();
-
                 Decode decodeDemo = new Decode();
                 MesgBroadcaster mesgBroadcaster = new MesgBroadcaster();
 
@@ -36,7 +34,6 @@ namespace PeakswareTest.Data
 
                 // Subscribe to message events of interest by connecting to the Broadcaster
                 mesgBroadcaster.MesgEvent += OnMesg;
-                //mesgBroadcaster.RecordMesgEvent += OnRecordMesg;
                 mesgBroadcaster.FileIdMesgEvent += OnFileIDMesg;
 
                 bool status = decodeDemo.IsFIT(fitSource) && decodeDemo.CheckIntegrity(fitSource);
@@ -52,134 +49,30 @@ namespace PeakswareTest.Data
             }
             Workout workout = new Workout
             {
-                StartTime = _start,
                 DataChannels = dataChannels
             };
             return workout;
         }
 
-        private static void InitializeDataChannels()
-        {
-            dataChannels = new List<DataChannel>();
-            foreach (string channelType in channelsOfInterest)
-            {
-                DataChannel channel = new DataChannel
-                {
-                    Data = new Dictionary<double, int>(),
-                    DataType = channelType
-                };
-                dataChannels.Add(channel);
-            }
-
-        }
-
-        //static void OnRecordMesg(object sender, MesgEventArgs e)
-        //{
-        //    Console.WriteLine("=============================================================================================");
-        //    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        //    Console.WriteLine("Entering OnRecordMesg Method");
-        //    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        //    var record = (RecordMesg)e.mesg;
-
-        //    WriteFieldWithOverrides(record, RecordMesg.FieldDefNum.HeartRate);
-        //    WriteFieldWithOverrides(record, RecordMesg.FieldDefNum.Cadence);
-        //    WriteFieldWithOverrides(record, RecordMesg.FieldDefNum.Speed);
-        //    WriteFieldWithOverrides(record, RecordMesg.FieldDefNum.Distance);
-
-        //    foreach (string channelType in channelsOfInterest)
-        //    {
-        //        var data = record.GetFieldValue(channelType);
-        //        if (data != null)
-        //        {
-        //            double timeOffset = GetTimeOffset(record.GetTimestamp().GetDateTime());
-        //            dataChannels.Find(channel => channel.DataType.Equals(channelType)).Data.Add(timeOffset, Convert.ToInt32(data));
-        //        }
-        //    }
-
-        //}
-
-        //private static void WriteFieldWithOverrides(Mesg mesg, byte fieldNumber)
-        //{
-        //    Field profileField = Profile.GetField(mesg.Num, fieldNumber);
-        //    bool nameWritten = false;
-
-        //    if (null == profileField)
-        //    {
-        //        return;
-        //    }
-
-        //    IEnumerable<FieldBase> fields = mesg.GetOverrideField(fieldNumber);
-        //    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        //    Console.WriteLine("Writing Field With Overrides");
-        //    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-        //    foreach (FieldBase field in fields)
-        //    {
-        //        if (!nameWritten)
-        //        {
-        //            Console.WriteLine("   {0}", profileField.GetName());
-        //            nameWritten = true;
-        //        }
-
-        //        if (field is Field)
-        //        {
-        //            if (profileField.GetName() == "Speed") {
-        //                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * SPEED_MPH_FROM_MPS);
-        //            } else if(profileField.GetName() == "Distance") {
-        //                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_MILES);
-        //            }
-        //            Console.WriteLine("      native: {0}", field.GetValue());
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("      override: {0}", field.GetValue());
-        //        }
-        //    }
-        //}
-
         static void OnMesg(object sender, MesgEventArgs e)
         {
-            Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            Console.WriteLine("Entering OnMesg Method");
-            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-            Console.WriteLine("OnMesg: Received Mesg with global ID#{0}, its name is {1}", e.mesg.Num, e.mesg.Name);
-
-            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            Console.WriteLine("OnMesg - Writing Fields");
-            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-            int i = 0;
-            foreach (Field field in e.mesg.Fields)
+            if (dataChannels == null)
             {
-                for (int j = 0; j < field.GetNumValues(); j++)
-                {
-                    switch (field.GetName())
-                    {
-                        case "Speed":
-                            field.SetValue((double)Convert.ToDecimal(field.GetValue()) * SPEED_MPH_FROM_MPS);
-                            break;
-                        case "Distance":
-                            field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_MILES);
-                            break;
-                        case "Altitude":
-                            field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_FEET);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    Console.WriteLine("\tField{0} Index{1} (\"{2}\" Field#{4}) Value: {3} (raw value {5})",
-                        i,
-                        j,
-                        field.GetName(),
-                        field.GetValue(j),
-                        field.Num,
-                        field.GetRawValue(j));
-                }
-
-                i++;
+                dataChannels = new List<DataChannel>();
+            }
+            switch (e.mesg.Name)
+            {
+                case "Record":
+                    RecordImport(e);
+                    break;
+                case "Lap":
+                    RecordLap(e);
+                    break;
+                case "Session":
+                    RecordSession(e);
+                    break;
+                default:
+                    break;
             }
 
             if (mesgCounts.ContainsKey(e.mesg.Num))
@@ -190,7 +83,85 @@ namespace PeakswareTest.Data
             {
                 mesgCounts.Add(e.mesg.Num, 1);
             }
-			Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        }
+
+        private static void RecordSession(MesgEventArgs e)
+        {
+            var sessionMesg = (SessionMesg)e.mesg;
+            int i = 0;
+            foreach (Field field in e.mesg.Fields)
+            {
+                for (int j = 0; j < field.GetNumValues(); j++)
+                {
+                    ConvertDefaultUnitsToImperial(field);
+                    Session session = new Session();
+                    session.SessionMetrics.Add(field.GetName(), (double)Convert.ToDecimal(field.GetValue()));
+                }
+                i++;
+            }
+        }
+
+        private static void RecordLap(MesgEventArgs e)
+        {
+            var lapMesg = (LapMesg)e.mesg;
+            int i = 0;
+            foreach (Field field in e.mesg.Fields)
+            {
+                for (int j = 0; j < field.GetNumValues(); j++)
+                {
+                    ConvertDefaultUnitsToImperial(field);
+                    System.Predicate<DataChannel> dataTypeFilter = channel => channel.DataType.Equals(field.GetName());
+                    Lap lap = new Lap();
+                    lap.LapMetrics.Add(field.GetName(), (double)Convert.ToDecimal(field.GetValue()));
+                }
+
+                i++;
+            }
+        }
+
+        private static void RecordImport(MesgEventArgs e)
+        {
+            var record = (RecordMesg)e.mesg;
+            int i = 0;
+            foreach (Field field in e.mesg.Fields)
+            {
+                for (int j = 0; j < field.GetNumValues(); j++)
+                {
+                    ConvertDefaultUnitsToImperial(field);
+                    System.Predicate<DataChannel> dataTypeFilter = channel => channel.DataType.Equals(field.GetName());
+                    DataChannel dataChannel = null;
+                    dataChannel = dataChannels.Find(dataTypeFilter);
+                    if (dataChannel == null)
+                    {
+                        dataChannel = new DataChannel
+                        {
+                            DataType = field.GetName()
+                        };
+                    }
+                    double timeOffset = GetTimeOffset(record.GetTimestamp().GetDateTime());
+                    dataChannel.Data.Add(timeOffset, (double)Convert.ToDecimal(field.GetValue()));
+                }
+
+                i++;
+            }
+        }
+
+        private static void ConvertDefaultUnitsToImperial(Field field)
+        {
+            switch (field.GetName())
+            {
+                case "Speed":
+                    field.SetValue((double)Convert.ToDecimal(field.GetValue()) * SPEED_MPH_FROM_MPS);
+                    break;
+                case "Distance":
+                    field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_MILES);
+                    break;
+                case "Altitude":
+                    field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_FEET);
+                    break;
+                default:
+                    break;
+            }
         }
 
         static double GetTimeOffset(System.DateTime date)

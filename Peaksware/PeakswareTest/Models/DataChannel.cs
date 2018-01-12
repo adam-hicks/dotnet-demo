@@ -9,6 +9,6 @@ namespace PeakswareTest.Models
         public int MinValue { get; set; }
         public int MaxValue { get; set; }
         public Dictionary<int, int> MaxEfforts { get; set; }
-        public Dictionary<double, int> Data { get; set; }
+        public Dictionary<double, double> Data { get; set; }
     }
 }
