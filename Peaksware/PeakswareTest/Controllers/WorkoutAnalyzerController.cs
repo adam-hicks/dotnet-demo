@@ -9,22 +9,13 @@ namespace PeakswareTest.Controllers
 {
     public class WorkoutAnalyzerController
     {
-
         public void Run()
         {
             ConsoleView.Welcome();
             Workout workout = RetrieveData();
             if (workout != null)
             {
-                string[] channelTypes = { "Power", "HeartRate" };
-                foreach (string channelType in channelTypes)
-                {
-                    System.Predicate<DataChannel> dataTypeFilter = channel => channel.DataType.Equals(channelType);
-                    DataChannel dataChannel = workout.DataChannels.Find(dataTypeFilter);
-                    dataChannel.MaxEfforts = new DataChannelStatsCalculator(dataChannel.Data).CalculateAllEfforts();
-                    ConsoleView.ReportEfforts(dataChannel);
-                }
-
+                AnalyzeWorkout(workout);
             }
             else { ConsoleView.Print("Exiting..."); }
 
@@ -38,7 +29,7 @@ namespace PeakswareTest.Controllers
             do
             {
                 inputFile = ConsoleView.GetFileName(msg);
-                if (inputFile.Equals("Q") || inputFile.Equals("q"))
+                if (inputFile.ToUpperInvariant().Equals("Q"))
                 {
                     return null;
                 }
@@ -46,6 +37,18 @@ namespace PeakswareTest.Controllers
                 msg = "Specified file could not be read. Please try again: ";
             } while (workout == null);
             return workout;
+        }
+
+        private static void AnalyzeWorkout(Workout workout)
+        {
+            string[] channelTypes = { "Power", "HeartRate" };
+            foreach (string channelType in channelTypes)
+            {
+                System.Predicate<DataChannel> dataTypeFilter = channel => channel.DataType.Equals(channelType);
+                DataChannel dataChannel = workout.DataChannels.Find(dataTypeFilter);
+                dataChannel.MaxEfforts = new DataChannelStatsCalculator(dataChannel.Data).CalculateAllEfforts();
+                ConsoleView.ReportEfforts(dataChannel);
+            }
         }
     }
 }

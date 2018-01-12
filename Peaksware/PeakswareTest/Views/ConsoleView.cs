@@ -30,7 +30,7 @@ namespace PeakswareTest.Views
                 Console.WriteLine("Using files/2012-05-31-11-17-12.fit...");
                 return "files/2012-05-31-11-17-12.fit";
             }
-            else if (inputFile.Equals("Q") || inputFile.Equals("q"))
+            else if (inputFile.ToUpperInvariant().Equals("Q"))
             {
                 return inputFile;
             }

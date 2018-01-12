@@ -5,8 +5,8 @@ namespace PeakswareTest.Models
 {
     public class Workout
     {
-        public Session session;
+        public Session Session { get; set; }
         public List<DataChannel> DataChannels { get; set; }
-        public List<Lap> Laps { get; set;} 
+        public List<Lap> Laps { get; set; }
     }
 }
