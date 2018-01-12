@@ -5684,11 +5684,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareUnitTests/DTO.Tests/Service.Tests.csproj",
-      "projectName": "Service.Tests",
-      "projectPath": "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareUnitTests/DTO.Tests/Service.Tests.csproj",
+      "projectUniqueName": "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareUnitTests/BusinessLogicTests/BusinessLogicTests.csproj",
+      "projectName": "BusinessLogicTests",
+      "projectPath": "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareUnitTests/BusinessLogicTests/BusinessLogicTests.csproj",
       "packagesPath": "/Users/adamhicks/.nuget/packages/",
-      "outputPath": "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareUnitTests/DTO.Tests/obj/",
+      "outputPath": "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareUnitTests/BusinessLogicTests/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"

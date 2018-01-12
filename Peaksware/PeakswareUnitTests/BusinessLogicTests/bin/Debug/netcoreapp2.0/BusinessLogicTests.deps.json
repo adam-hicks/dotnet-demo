@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.0": {
-      "Service.Tests/1.0.0": {
+      "BusinessLogicTests/1.0.0": {
         "dependencies": {
           "Microsoft.NET.Test.Sdk": "15.5.0",
           "NUnit3TestAdapter": "3.9.0",
@@ -14,7 +14,7 @@
           "NUnit": "3.9.0"
         },
         "runtime": {
-          "Service.Tests.dll": {}
+          "BusinessLogicTests.dll": {}
         }
       },
       "fit/1.0.0": {
@@ -1035,7 +1035,7 @@
     }
   },
   "libraries": {
-    "Service.Tests/1.0.0": {
+    "BusinessLogicTests/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

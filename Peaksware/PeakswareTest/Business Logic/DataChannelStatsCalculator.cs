@@ -27,7 +27,7 @@ namespace PeakswareTest.Business_Logic
             return maxEfforts;
         }
 
-        private static void CalculateMaxEffort(int effortTimeMinutes)
+        private void CalculateMaxEffort(int effortTimeMinutes)
         {
             int millisecondsPerMinute = 60 * 1000;
             int expectedWindowMillis = effortTimeMinutes * millisecondsPerMinute;

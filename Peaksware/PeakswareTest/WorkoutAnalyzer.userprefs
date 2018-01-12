@@ -1,10 +1,11 @@
 ﻿<Properties StartupConfiguration="{ADA037EE-7CC0-49A9-B5B0-30A5BBBFAD7A}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Views/ConsoleView.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Business Logic/DataChannelStatsCalculator.cs">
     <Files>
-      <File FileName="Controllers/WorkoutAnalyzerController.cs" Line="12" Column="9" />
-      <File FileName="Models/DataChannel.cs" Line="11" Column="36" />
-      <File FileName="Data/FitImport.cs" Line="48" Column="11" NotebookId="1" />
-      <File FileName="Views/ConsoleView.cs" Line="51" Column="13" NotebookId="1" />
+      <File FileName="Controllers/WorkoutAnalyzerController.cs" Line="28" Column="14" />
+      <File FileName="Data/FitImport.cs" Line="49" Column="11" NotebookId="1" />
+      <File FileName="Views/ConsoleView.cs" Line="24" Column="9" NotebookId="1" />
+      <File FileName="Models/DataChannel.cs" Line="11" Column="36" NotebookId="1" />
+      <File FileName="Business Logic/DataChannelStatsCalculator.cs" Line="30" Column="41" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.WorkoutAnalyzer PreferredExecutionTarget="MonoDevelop.Default" />
