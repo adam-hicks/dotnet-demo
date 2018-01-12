@@ -2,22 +2,25 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using Dynastream.Fit;
-using PeakswareTest.DTO;
+using PeakswareTest.Models;
 
-namespace PeakswareTest.DAO
+namespace PeakswareTest.Data
 {
-    public class FitImportDao
+    public static class FitImport
     {
-        private static Dictionary<string, IDataChannel> _dataChannels;
+        private static List<DataChannel> dataChannels;
         private static System.DateTime? _start;
+        private static string[] channelsOfInterest = { "Power", "HeartRate", "Cadence" };
 
-        public static Dictionary<string, IDataChannel> importData(string filename)
+        public static Workout ImportData(string filename)
         {
             // Attempt to open .FIT file
+            if (!System.IO.File.Exists(filename)){
+                return null;
+            }
             using (var fitSource = new FileStream(filename, FileMode.Open))
             {
-                Console.WriteLine("Opening {0}", filename);
-                initializeDataChannels();
+                InitializeDataChannels();
 
                 Decode decodeDemo = new Decode();
                 MesgBroadcaster mesgBroadcaster = new MesgBroadcaster();
@@ -37,30 +40,45 @@ namespace PeakswareTest.DAO
                 }
                 else
                 {
-                    throw new Exception(".fit data could not be read from selected file");
+                    return null;
                 }
             }
-            return _dataChannels;
+            Workout workout = new Workout
+            {
+                StartTime = _start,
+                DataChannels = dataChannels
+            };
+            return workout;
         }
 
-        private static void initializeDataChannels()
+        private static void InitializeDataChannels()
         {
-            _dataChannels = new Dictionary<string, IDataChannel>();
-            IDataChannel powerChannel = new PowerDataChannel();
-            powerChannel.setData(new Dictionary<double, ushort>());
-            _dataChannels.Add("Power", powerChannel);
+            dataChannels = new List<DataChannel>();
+            foreach (string channelType in channelsOfInterest)
+            {
+                DataChannel channel = new DataChannel
+                {
+                    Data = new Dictionary<double, int>(),
+                    DataType = channelType
+                };
+                dataChannels.Add(channel);
+            }
+
         }
 
         static void OnRecordMesg(object sender, MesgEventArgs e)
         {
             var record = (RecordMesg)e.mesg;
-
-            var power = record.GetFieldValue("Power");
-
-            if (power != null)
+            foreach (string channelType in channelsOfInterest)
             {
-                _dataChannels["Power"].getData().Add(GetTimeOffset(record.GetTimestamp().GetDateTime()), (ushort)power);
+                var data = record.GetFieldValue(channelType);
+                if (data != null)
+                {
+                    double timeOffset = GetTimeOffset(record.GetTimestamp().GetDateTime());
+                    dataChannels.Find(channel => channel.DataType.Equals(channelType)).Data.Add(timeOffset, Convert.ToInt32(data));
+                }
             }
+
         }
 
         static double GetTimeOffset(System.DateTime date)

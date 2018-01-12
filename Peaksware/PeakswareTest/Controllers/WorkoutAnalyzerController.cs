@@ -1,7 +1,8 @@
-using System.Collections.Generic;
-using PeakswareTest.DAO;
+using PeakswareTest.Data;
 using PeakswareTest.Views;
-using PeakswareTest.DTO;
+using PeakswareTest.Models;
+using PeakswareTest.Business_Logic;
+using System;
 
 namespace PeakswareTest.Controllers
 
@@ -9,18 +10,37 @@ namespace PeakswareTest.Controllers
     public class WorkoutAnalyzerController
     {
 
-        public void run()
+        public void Run()
         {
-            // Greet user and ask for filename
-            string inputFile = ConsoleView.getFileName();
-            // Instantiate new workout model to hold results for the specific workout to be imported
-            WorkoutDto workout = new WorkoutDto();
-            // Retrieve workout data from fit file and store in data channels within the workout DTO. This could be modified to retrieve user-specified channels if available.
-            workout.dataChannels = FitImportDao.importData(inputFile);
-            // Find max efforts. This could be modified to allow the user to input or select the effort durations they are interested in.
-            workout.dataChannels["Power"].calculateAllEfforts();
-            // Report summary to user. If the view was reporting more information, the entire workout DTO might be passed to the view. Here, I only pass the relevant dictionary for efficiency.
-            ConsoleView.reportEfforts(workout.getMaxEffortsForChannel("Power"));
+            ConsoleView.Welcome();
+            Workout workout = RetrieveData();
+            if (workout != null)
+            {
+                System.Predicate<DataChannel> powerDataType = channel => channel.DataType.Equals("Power");
+                DataChannel powerDataChannel = workout.DataChannels.Find(powerDataType);
+                powerDataChannel.MaxEfforts = new DataChannelStatsCalculator(workout.DataChannels.Find(channel => channel.DataType.Equals("Power")).Data).CalculateAllEfforts();
+                ConsoleView.ReportEfforts(powerDataChannel.MaxEfforts);
+            }
+            else { ConsoleView.Print("Exiting..."); }
+
+        }
+
+        private Workout RetrieveData()
+        {
+            Workout workout;
+            string inputFile;
+            string msg = "Please input filename with path or Q to exit (leave blank for default file): ";
+            do
+            {
+                inputFile = ConsoleView.GetFileName(msg);
+                if (inputFile.Equals("Q") || inputFile.Equals("q"))
+                {
+                    return null;
+                }
+                workout = FitImport.ImportData(inputFile);
+                msg = "Specified file could not be read. Please try again: ";
+            } while (workout != null);
+            return workout;
         }
     }
 }

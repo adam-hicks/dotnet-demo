@@ -6,7 +6,7 @@ namespace PeakswareTest
     {
         static void Main(string[] args)
         {
-            new WorkoutAnalyzerController().run();
+            new WorkoutAnalyzerController().Run();
         }
     }
 }
