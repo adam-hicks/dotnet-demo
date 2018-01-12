@@ -42,7 +42,7 @@ namespace PeakswareTest.Controllers
                 {
                     return null;
                 }
-                workout = FitImport.ImportData(inputFile);
+                workout = FitImportFull.ImportData(inputFile);
                 msg = "Specified file could not be read. Please try again: ";
             } while (workout == null);
             return workout;

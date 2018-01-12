@@ -1,17 +1,20 @@
 ﻿<Properties StartupConfiguration="{ADA037EE-7CC0-49A9-B5B0-30A5BBBFAD7A}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Business Logic/DataChannelStatsCalculator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../PeakswareUnitTests/BusinessLogicTests/StatsCalculatorTest.cs">
     <Files>
       <File FileName="Controllers/WorkoutAnalyzerController.cs" Line="28" Column="14" />
-      <File FileName="Data/FitImport.cs" Line="49" Column="11" NotebookId="1" />
+      <File FileName="Data/FitImport.cs" Line="73" Column="1" NotebookId="1" />
       <File FileName="Views/ConsoleView.cs" Line="24" Column="9" NotebookId="1" />
       <File FileName="Models/DataChannel.cs" Line="11" Column="36" NotebookId="1" />
       <File FileName="Business Logic/DataChannelStatsCalculator.cs" Line="30" Column="41" NotebookId="1" />
+      <File FileName="../PeakswareUnitTests/BusinessLogicTests/StatsCalculatorTest.cs" Line="148" Column="10" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.WorkoutAnalyzer PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/Data/FitImport.cs" relfile="Data/FitImport.cs" line="73" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />

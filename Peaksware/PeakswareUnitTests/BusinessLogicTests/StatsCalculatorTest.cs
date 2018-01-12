@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Threading;
+using PeakswareTest.Business_Logic;
+using PeakswareTest.Models;
 
 namespace Tests
 {
@@ -21,13 +22,13 @@ namespace Tests
         [Test]
         public void TestDataIsSeeded()
         {
-            CollectionAssert.IsNotEmpty(calculator.data);
+            CollectionAssert.IsNotEmpty(calculator.getData());
         }
 
         [Test]
         public void MaxEffortsStartsEmpty()
         {
-            CollectionAssert.IsEmpty(calculator.MaxEfforts);
+            CollectionAssert.IsEmpty(calculator.GetMaxEfforts());
         }
 
         [TestCase(1, 2484)]
@@ -38,7 +39,7 @@ namespace Tests
         public void TestCalculateMaxEffort(int effortTimeMinutes, int expectedRoundedAverage)
         {
             calculator.CalculateMaxEffort(effortTimeMinutes);
-            channel.MaxEfforts = calculator.MaxEfforts;
+            channel.MaxEfforts = calculator.GetMaxEfforts();
             int roundedResultString = channel.MaxEfforts[effortTimeMinutes];
             Assert.AreEqual(roundedResultString, expectedRoundedAverage);
         }
@@ -82,69 +83,6 @@ namespace Tests
                 }
             }
             channel.Data = data;
-        }
-
-        private class DataChannelStatsCalculator
-        {
-            public Dictionary<double, int> data;
-            public Dictionary<int, int> MaxEfforts { get; set; }
-
-            public DataChannelStatsCalculator(Dictionary<double, int> inputData)
-            {
-                data = inputData;
-                MaxEfforts = new Dictionary<int, int>();
-            }
-
-            public Dictionary<int, int> CalculateAllEfforts()
-            {
-                int[] timesOfInterestMinutes = { 1, 5, 10, 15, 20 };
-                foreach (int effortTime in timesOfInterestMinutes)
-                {
-                    Thread thread = new Thread(() => CalculateMaxEffort(effortTime));
-                    thread.Start();
-                    thread.Join();
-                }
-                return MaxEfforts;
-            }
-
-            internal void CalculateMaxEffort(int effortTimeMinutes)
-            {
-                int millisecondsPerMinute = 60 * 1000;
-                int expectedWindowMillis = effortTimeMinutes * millisecondsPerMinute;
-                Queue<double> timeQueue = new Queue<double>();
-                Queue<int> dataValueQueue = new Queue<int>();
-                double maxDataSum = 0;
-                double currentDataSum = 0;
-                int dataSumDatums = 0;
-                foreach (KeyValuePair<double, int> powerReading in data)
-                {
-                    timeQueue.Enqueue(powerReading.Key);
-                    dataValueQueue.Enqueue(powerReading.Value);
-                    currentDataSum += powerReading.Value;
-                    double windowTime = powerReading.Key - timeQueue.Peek();
-                    if (windowTime >= expectedWindowMillis)
-                    {
-                        if (currentDataSum > maxDataSum)
-                        {
-                            maxDataSum = currentDataSum;
-                            dataSumDatums = dataValueQueue.Count;
-                        }
-                        currentDataSum -= dataValueQueue.Dequeue();
-                        timeQueue.Dequeue();
-                    }
-                }
-                MaxEfforts.Add(effortTimeMinutes, (int)(maxDataSum / dataSumDatums));
-            }
-        }
-
-        private class DataChannel
-        {
-            public string DataType { get; set; }
-            public int AverageValue { get; set; }
-            public int MinValue { get; set; }
-            public int MaxValue { get; set; }
-            public Dictionary<int, int> MaxEfforts { get; set; }
-            public Dictionary<double, int> Data { get; set; }
         }
     }
 }

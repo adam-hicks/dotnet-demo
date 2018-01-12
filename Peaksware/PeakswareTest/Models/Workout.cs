@@ -5,8 +5,8 @@ namespace PeakswareTest.Models
 {
     public class Workout
     {
-        public DateTime? StartTime { get; set; }
-        public TimeSpan TotalTime { get; set; }
+        public Session session;
         public List<DataChannel> DataChannels { get; set; }
+        public List<Lap> Laps { get; set;} 
     }
 }

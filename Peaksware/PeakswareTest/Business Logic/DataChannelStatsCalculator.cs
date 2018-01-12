@@ -1,6 +1,7 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using System;
 
 namespace PeakswareTest.Business_Logic
 {
@@ -27,7 +28,12 @@ namespace PeakswareTest.Business_Logic
             return maxEfforts;
         }
 
-        private void CalculateMaxEffort(int effortTimeMinutes)
+        public Dictionary<double, int> getData()
+        {
+            return data;
+        }
+
+        public void CalculateMaxEffort(int effortTimeMinutes)
         {
             int millisecondsPerMinute = 60 * 1000;
             int expectedWindowMillis = effortTimeMinutes * millisecondsPerMinute;
@@ -55,5 +61,7 @@ namespace PeakswareTest.Business_Logic
             }
             maxEfforts.Add(effortTimeMinutes, (int)(maxDataSum / dataSumDatums));
         }
+
+        public Dictionary<int, int> GetMaxEfforts() => maxEfforts;
     }
 }

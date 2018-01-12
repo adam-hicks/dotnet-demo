@@ -1651,7 +1651,6 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
-          "Microsoft.NETCore.App": "2.0.0",
           "fit": "1.0.0"
         },
         "compile": {
@@ -5688,13 +5687,13 @@
       "projectName": "BusinessLogicTests",
       "projectPath": "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareUnitTests/BusinessLogicTests/BusinessLogicTests.csproj",
       "packagesPath": "/Users/adamhicks/.nuget/packages/",
-      "outputPath": "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareUnitTests/BusinessLogicTests/obj/",
+      "outputPath": "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareUnitTests/BusinessLogicTests/obj",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/adamhicks/.nuget/NuGet/NuGet.Config"
+        "/Users/adamhicks/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
@@ -5720,23 +5719,23 @@
     "frameworks": {
       "netcoreapp2.0": {
         "dependencies": {
-          "Microsoft.NET.Test.Sdk": {
-            "target": "Package",
-            "version": "[15.5.0, )"
-          },
           "Microsoft.NETCore.App": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[2.0.0, )",
+            "version": "2.0",
             "autoReferenced": true
-          },
-          "NUnit3TestAdapter": {
-            "target": "Package",
-            "version": "[3.9.0, )"
           },
           "nunit": {
             "target": "Package",
-            "version": "[3.9.0, )"
+            "version": "3.9.0"
+          },
+          "NUnit3TestAdapter": {
+            "target": "Package",
+            "version": "3.9.0"
+          },
+          "Microsoft.NET.Test.Sdk": {
+            "target": "Package",
+            "version": "15.5.0"
           }
         },
         "imports": [
