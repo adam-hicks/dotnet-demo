@@ -8,14 +8,11 @@ namespace PeakswareTest.Data
 {
     public static class FitImportFull
     {
-        private static readonly double SPEED_MPH_FROM_MPS = 2.24;
-        private static readonly double DISTANCE_METERS_TO_MILES = .0006214;
+
 
         static Dictionary<ushort, int> mesgCounts = new Dictionary<ushort, int>();
-        private static List<DataChannel> dataChannels;
         private static System.DateTime? _start;
-
-        public static readonly double DISTANCE_METERS_TO_FEET = 3.281;
+        private static Workout workout = new Workout();
 
         public static Workout ImportData(string filename)
         {
@@ -47,32 +44,18 @@ namespace PeakswareTest.Data
                     return null;
                 }
             }
-            Workout workout = new Workout
-            {
-                DataChannels = dataChannels
-            };
             return workout;
         }
 
         static void OnMesg(object sender, MesgEventArgs e)
         {
-            if (dataChannels == null)
+            var sessionMesg = (SessionMesg)e.mesg;
+            foreach (Field field in e.mesg.Fields)
             {
-                dataChannels = new List<DataChannel>();
-            }
-            switch (e.mesg.Name)
-            {
-                case "Record":
-                    RecordImport(e);
-                    break;
-                case "Lap":
-                    RecordLap(e);
-                    break;
-                case "Session":
-                    RecordSession(e);
-                    break;
-                default:
-                    break;
+                for (int j = 0; j < field.GetNumValues(); j++)
+                {
+                    StoreDataInAppropriateModel(e.mesg.Name, field);
+                }
             }
 
             if (mesgCounts.ContainsKey(e.mesg.Num))
@@ -85,83 +68,27 @@ namespace PeakswareTest.Data
             }
         }
 
-        private static void RecordSession(MesgEventArgs e)
+        private static void StoreDataInAppropriateModel(string dataType, Field field)
         {
-            var sessionMesg = (SessionMesg)e.mesg;
-            int i = 0;
-            foreach (Field field in e.mesg.Fields)
+            switch (dataType)
             {
-                for (int j = 0; j < field.GetNumValues(); j++)
-                {
-                    ConvertDefaultUnitsToImperial(field);
+                case "Session":
                     Session session = new Session();
-                    session.SessionMetrics.Add(field.GetName(), (double)Convert.ToDecimal(field.GetValue()));
-                }
-                i++;
-            }
-        }
-
-        private static void RecordLap(MesgEventArgs e)
-        {
-            var lapMesg = (LapMesg)e.mesg;
-            int i = 0;
-            foreach (Field field in e.mesg.Fields)
-            {
-                for (int j = 0; j < field.GetNumValues(); j++)
-                {
-                    ConvertDefaultUnitsToImperial(field);
-                    System.Predicate<DataChannel> dataTypeFilter = channel => channel.DataType.Equals(field.GetName());
+                    session.SessionMetrics.Add(field.GetName(), field.GetValue());
+                    workout.Session = session;
+                    break;
+                case "Lap":
                     Lap lap = new Lap();
-                    lap.LapMetrics.Add(field.GetName(), (double)Convert.ToDecimal(field.GetValue()));
-                }
-
-                i++;
-            }
-        }
-
-        private static void RecordImport(MesgEventArgs e)
-        {
-            var record = (RecordMesg)e.mesg;
-            int i = 0;
-            foreach (Field field in e.mesg.Fields)
-            {
-                for (int j = 0; j < field.GetNumValues(); j++)
-                {
-                    ConvertDefaultUnitsToImperial(field);
-                    System.Predicate<DataChannel> dataTypeFilter = channel => channel.DataType.Equals(field.GetName());
-                    DataChannel dataChannel = null;
-                    dataChannel = dataChannels.Find(dataTypeFilter);
-                    if (dataChannel == null)
-                    {
-                        dataChannel = new DataChannel
-                        {
-                            DataType = field.GetName()
-                        };
-                    }
-                    double timeOffset = GetTimeOffset(record.GetTimestamp().GetDateTime());
-                    dataChannel.Data.Add(timeOffset, (double)Convert.ToDecimal(field.GetValue()));
-                }
-
-                i++;
-            }
-        }
-
-        private static void ConvertDefaultUnitsToImperial(Field field)
-        {
-            if (field.GetName().Contains("Speed"))
-            {
-                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * SPEED_MPH_FROM_MPS);
-            }
-            else if (field.GetName() == "Distance")
-            {
-                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_MILES);
-            }
-            else if (field.GetName().Contains("Altitude"))
-            {
-                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_FEET);
-            }
-            else
-            {
+                    lap.LapMetrics.Add(field.GetName(), field.GetValue());
+                    workout.Laps.Add(lap);
+                    break;
+                case "Record":
+                    Record record = new Record();
+                    record.RecordMetrics.Add(field.GetName(), field.GetValue());
+                    workout.Records.Add(record);
+                    break;
+                default:
+                    break;
             }
         }
 

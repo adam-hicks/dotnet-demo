@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dynastream.Fit;
 using PeakswareTest.Models;
 
@@ -12,14 +13,20 @@ namespace PeakswareTest.Business_Logic
 
         public static void ConvertWorkoutToImperial(Workout workout)
         {
-            ConvertLapFields();
+            ConvertLapFields(workout.Laps);
             ConvertSessionFields();
             ConvertDataChannelFields();
         }
 
-        private static void ConvertLapFields()
+        private static void ConvertLapFields(List<Lap> Laps)
         {
-            throw new NotImplementedException();
+            foreach (Lap Lap in Laps)
+            {
+                foreach (KeyValuePair<string, object> Metric in Lap.LapMetrics)
+                {
+                    ConvertFieldsToImperial(Metric);
+                }
+            }
         }
 
         private static void ConvertSessionFields()
@@ -32,20 +39,31 @@ namespace PeakswareTest.Business_Logic
             throw new NotImplementedException();
         }
 
-        private static void ConvertFieldsToImperial(Field field)
+        private static KeyValuePair<string, object> ConvertFieldsToImperial(KeyValuePair<string, object> Metric)
         {
-            if (field.GetName().Contains("Speed"))
+            double DoubleValue = 0;
+            try
             {
-                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * SPEED_MPH_FROM_MPS);
+                DoubleValue = (double)Convert.ToDecimal(Metric.Value);
             }
-            else if (field.GetName() == "Distance")
+            catch (InvalidCastException)
             {
-                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_MILES);
+                return Metric;
             }
-            else if (field.GetName().Contains("Altitude"))
+            KeyValuePair<string, object> NewMetric;
+            if (Metric.Key.Contains("Speed"))
             {
-                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_FEET);
+                NewMetric = new KeyValuePair<string, object>(Metric.Key, DoubleValue * SPEED_MPH_FROM_MPS);
             }
+            else if (Metric.Key == "Distance")
+            {
+                NewMetric = new KeyValuePair<string, object>(Metric.Key, DoubleValue * DISTANCE_METERS_TO_MILES);
+            }
+            else if (Metric.Key.Contains("Altitude"))
+            {
+                NewMetric = new KeyValuePair<string, object>(Metric.Key, DoubleValue * DISTANCE_METERS_TO_FEET);
+            }
+            return NewMetric;
         }
     }
 }
