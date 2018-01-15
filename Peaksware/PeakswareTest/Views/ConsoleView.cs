@@ -15,7 +15,7 @@ namespace PeakswareTest.Views
             Console.WriteLine(msg);
             string inputFile = Console.ReadLine();
             inputFile = ValidateFileName(inputFile);
-            if (inputFile.Equals(""))
+            if (inputFile != null && inputFile.Equals(""))
             {
                 inputFile = "files/2012-05-31-11-17-12.fit";
             }

@@ -25,17 +25,20 @@ namespace PeakswareTest.Controllers
 
         private Workout RetrieveData()
         {
-            Workout workout;
+            Workout workout = null;
             string inputFile;
             string msg = "Please input filename with path or Q to exit (leave blank for default file): ";
             do
             {
                 inputFile = ConsoleView.GetFileName(msg);
-                if (inputFile.ToUpperInvariant().Equals("Q"))
+                if (inputFile != null)
                 {
-                    return null;
-                }
-                workout = FitImportFull.ImportData(inputFile);
+                    if (inputFile.ToUpperInvariant().Equals("Q"))
+                    {
+                        return null;
+                    }
+                    workout = FitImportFull.ImportData(inputFile);
+                } 
                 msg = "Specified file could not be read. Please try again: ";
             } while (workout == null);
             return workout;
