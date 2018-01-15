@@ -17,7 +17,7 @@ namespace PeakswareTest.Controllers
             {
                 FitUnitConverter.ConvertWorkoutToImperial(workout);
                 DerivedDataExtractor.ExtractDataChannels(workout);
-                AnalyzeWorkout(workout);
+                new DataChannelStatsCalculator(workout.DataChannels).CalculateEffortsForAllChannels();
                 ConsoleView.PrintWorkoutSummary(workout);
             }
             else { ConsoleView.Print("Exiting..."); }
@@ -47,16 +47,7 @@ namespace PeakswareTest.Controllers
 
         private static void AnalyzeWorkout(Workout workout)
         {
-            string[] channelTypes = { "Power", "HeartRate" };
-            foreach (string channelType in channelTypes)
-            {
-                System.Predicate<DataChannel> dataTypeFilter = channel => channel.DataType.Equals(channelType);
-                DataChannel dataChannel = workout.DataChannels.Find(dataTypeFilter);
-                if (dataChannel != null)
-                {
-                    dataChannel.MaxEfforts = new DataChannelStatsCalculator(dataChannel.Data).CalculateAllEfforts();
-                }
-            }
+            
         }
     }
 }

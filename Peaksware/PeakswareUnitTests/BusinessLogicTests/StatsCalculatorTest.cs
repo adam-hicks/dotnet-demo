@@ -8,27 +8,33 @@ namespace Tests
     [TestFixture]
     public class StatsCalculatorTest
     {
-        private DataChannelStatsCalculator calculator;
-        private DataChannel channel;
+        private DataChannelStatsCalculator Calculator;
+        private Workout ThisWorkout;
+        private DataChannel ADataChannel;
 
         [SetUp]
         public void Setup()
         {
-            channel = new DataChannel();
-            SeedData();
-            calculator = new DataChannelStatsCalculator(channel.Data);
+            ThisWorkout = new Workout();
+            ADataChannel = new DataChannel
+            {
+                DataType = "Power",
+                Data = SeedData()
+            };
+            ThisWorkout.DataChannels.Add(ADataChannel);
+            Calculator = new DataChannelStatsCalculator(ThisWorkout.DataChannels);
         }
 
         [Test]
         public void TestDataIsSeeded()
         {
-            CollectionAssert.IsNotEmpty(calculator.data);
+            CollectionAssert.IsNotEmpty(Calculator.DataChannels);
         }
 
         [Test]
         public void MaxEffortsStartsEmpty()
         {
-            CollectionAssert.IsEmpty(calculator.GetMaxEfforts());
+            CollectionAssert.IsEmpty(Calculator.GetMaxEfforts());
         }
 
         [TestCase(1, 2484)]
@@ -38,51 +44,101 @@ namespace Tests
         [TestCase(20, 2199)]
         public void TestCalculateMaxEffort(int effortTimeMinutes, int expectedRoundedAverage)
         {
-            calculator.CalculateMaxEffort(effortTimeMinutes);
-            channel.MaxEfforts = calculator.GetMaxEfforts();
-            int roundedResultString = channel.MaxEfforts[effortTimeMinutes];
+            Calculator.CalculateMaxEffort(effortTimeMinutes, ADataChannel.Data);
+            ADataChannel.MaxEfforts = Calculator.GetMaxEfforts();
+            int roundedResultString = ADataChannel.MaxEfforts[effortTimeMinutes];
             Assert.AreEqual(roundedResultString, expectedRoundedAverage);
         }
 
         [Test]
         public void TestCalculateAllEfforts()
         {
-            channel.MaxEfforts = calculator.CalculateAllEfforts();
-            int roundedResultString = channel.MaxEfforts[1];
+            ADataChannel.MaxEfforts = Calculator.CalculateAllEffortsForSingleChannel(ADataChannel.Data);
+            int roundedResultString = ADataChannel.MaxEfforts[1];
             Assert.AreEqual(roundedResultString, 2484);
 
-            roundedResultString = channel.MaxEfforts[5];
+            roundedResultString = ADataChannel.MaxEfforts[5];
             Assert.AreEqual(roundedResultString, 2424);
 
-            roundedResultString = channel.MaxEfforts[10];
+            roundedResultString = ADataChannel.MaxEfforts[10];
             Assert.AreEqual(roundedResultString, 2349);
 
-            roundedResultString = channel.MaxEfforts[15];
+            roundedResultString = ADataChannel.MaxEfforts[15];
             Assert.AreEqual(roundedResultString, 2274);
 
-            roundedResultString = channel.MaxEfforts[20];
+            roundedResultString = ADataChannel.MaxEfforts[20];
             Assert.AreEqual(roundedResultString, 2199);
 
-            Assert.That(channel.MaxEfforts.Keys, Does.Not.Contain(25));
+            Assert.That(ADataChannel.MaxEfforts.Keys, Does.Not.Contain(25));
+        }
+
+        [Test]
+        public void TestCalculateEffortsForAllChannels()
+        {
+            DataChannel AnotherDataChannel = new DataChannel
+            {
+                DataType = "HeartRate",
+                Data = SeedData()
+            };
+            Calculator.DataChannels.Add(AnotherDataChannel);
+            Calculator.CalculateEffortsForAllChannels();
+
+            System.Predicate<DataChannel> dataTypeFilter = channel => channel.DataType.Equals("Power");
+            DataChannel ThisDataChannel = ThisWorkout.DataChannels.Find(dataTypeFilter);
+            Assert.NotNull(ThisDataChannel);
+
+            int roundedResultString = ThisDataChannel.MaxEfforts[1];
+            Assert.AreEqual(roundedResultString, 2484);
+
+            roundedResultString = ThisDataChannel.MaxEfforts[5];
+            Assert.AreEqual(roundedResultString, 2424);
+
+            roundedResultString = ThisDataChannel.MaxEfforts[10];
+            Assert.AreEqual(roundedResultString, 2349);
+
+            roundedResultString = ThisDataChannel.MaxEfforts[15];
+            Assert.AreEqual(roundedResultString, 2274);
+
+            roundedResultString = ThisDataChannel.MaxEfforts[20];
+            Assert.AreEqual(roundedResultString, 2199);
+
+            dataTypeFilter = channel => channel.DataType.Equals("HeartRate");
+            ThisDataChannel = ThisWorkout.DataChannels.Find(dataTypeFilter);
+            Assert.NotNull(ThisDataChannel);
+
+            roundedResultString = ThisDataChannel.MaxEfforts[1];
+            Assert.AreEqual(roundedResultString, 2484);
+
+            roundedResultString = ThisDataChannel.MaxEfforts[5];
+            Assert.AreEqual(roundedResultString, 2424);
+
+            roundedResultString = ThisDataChannel.MaxEfforts[10];
+            Assert.AreEqual(roundedResultString, 2349);
+
+            roundedResultString = ThisDataChannel.MaxEfforts[15];
+            Assert.AreEqual(roundedResultString, 2274);
+
+            roundedResultString = ThisDataChannel.MaxEfforts[20];
+            Assert.AreEqual(roundedResultString, 2199);
         }
 
         // generate repeatable data with predictable attributes for testing
-        private void SeedData()
+        private Dictionary<double, double> SeedData()
         {
-            int dataSize = 5000;
-            Dictionary<double, double> data = new Dictionary<double, double>();
-            for (double i = 0; i <= dataSize; i++)
+            int DataSize = 5000;
+            Dictionary<double, double> SeedDataDict = new Dictionary<double, double>();
+            for (double i = 0; i <= DataSize; i++)
             {
-                if (i < dataSize / 2)
+                if (i < DataSize / 2)
                 {
-                    data.Add(i * 1000, (int)i);
+                    SeedDataDict.Add(i * 1000, (int)i);
                 }
                 else
                 {
-                    data.Add(i * 1000, (int)(dataSize - i));
+                    SeedDataDict.Add(i * 1000, (int)(DataSize - i));
                 }
             }
-            channel.Data = data;
+            return SeedDataDict;
         }
     }
 }
