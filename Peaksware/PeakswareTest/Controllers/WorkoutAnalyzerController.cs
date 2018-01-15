@@ -15,6 +15,7 @@ namespace PeakswareTest.Controllers
             Workout workout = RetrieveData();
             if (workout != null)
             {
+                ConvertUnits(workout);
                 AnalyzeWorkout(workout);
             }
             else { ConsoleView.Print("Exiting..."); }

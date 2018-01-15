@@ -148,19 +148,20 @@ namespace PeakswareTest.Data
 
         private static void ConvertDefaultUnitsToImperial(Field field)
         {
-            switch (field.GetName())
+            if (field.GetName().Contains("Speed"))
             {
-                case "Speed":
-                    field.SetValue((double)Convert.ToDecimal(field.GetValue()) * SPEED_MPH_FROM_MPS);
-                    break;
-                case "Distance":
-                    field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_MILES);
-                    break;
-                case "Altitude":
-                    field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_FEET);
-                    break;
-                default:
-                    break;
+                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * SPEED_MPH_FROM_MPS);
+            }
+            else if (field.GetName() == "Distance")
+            {
+                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_MILES);
+            }
+            else if (field.GetName().Contains("Altitude"))
+            {
+                field.SetValue((double)Convert.ToDecimal(field.GetValue()) * DISTANCE_METERS_TO_FEET);
+            }
+            else
+            {
             }
         }
 
