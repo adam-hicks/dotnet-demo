@@ -6,15 +6,18 @@ namespace PeakswareTest.Business_Logic
 {
     public class DataChannelStatsCalculator
     {
+        // Effort channels and windows could be set through dependency injection and/or user selection. An interface or configuration file could define which data channels are "efforts".
         private static readonly string[] EFFORT_CHANNELS = { "Power", "HeartRate" };
         private static readonly int[] EFFORT_WINDOW_MINUTES = { 1, 5, 10, 15, 20 };
         private static readonly int MILLISECONDS_PER_MINUTE = 60 * 1000;
+
         private static Dictionary<int, int> MaxEfforts;
         public List<DataChannel> DataChannels;
 
-        public DataChannelStatsCalculator(List<DataChannel> InputDataChannels)
+        // Since the class is not static, I decided to require the workout data in the constructor. This could change if threading were handled differently.
+        public DataChannelStatsCalculator(List<DataChannel> inputDataChannels)
         {
-            this.DataChannels = InputDataChannels;
+            this.DataChannels = inputDataChannels;
             MaxEfforts = new Dictionary<int, int>();
         }
 

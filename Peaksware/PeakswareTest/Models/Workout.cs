@@ -18,6 +18,7 @@ namespace PeakswareTest.Models
             DataChannels = new List<DataChannel>();
         }
 
+        // Started applying Law of Demeter. Should not have to chain method calls to retrieve properties of objects contained within containing object.
         public string getDuration()
         {
             double seconds = (double)Convert.ToDecimal(Session.SessionMetrics["TotalElapsedTime"]);

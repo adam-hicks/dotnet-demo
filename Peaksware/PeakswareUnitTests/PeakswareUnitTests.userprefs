@@ -1,9 +1,18 @@
 ﻿<Properties StartupConfiguration="{8F8163B4-BA8D-4BAC-8A2F-DD710A37E0FA}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="../PeakswareTest/Business Logic/DataChannelStatsCalculator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../PeakswareTest/Views/ConsoleView.cs">
     <Files>
       <File FileName="../PeakswareTest/Program.cs" Line="9" Column="25" />
-      <File FileName="../PeakswareTest/Controllers/WorkoutAnalyzerController.cs" Line="50" Column="13" />
-      <File FileName="../PeakswareTest/Business Logic/DataChannelStatsCalculator.cs" Line="55" Column="1" />
+      <File FileName="../PeakswareTest/Controllers/WorkoutAnalyzerController.cs" Line="37" Column="175" />
+      <File FileName="../PeakswareTest/Business Logic/DataChannelStatsCalculator.cs" Line="17" Column="157" />
+      <File FileName="../PeakswareTest/Business Logic/DerivedDataExtractor.cs" Line="30" Column="127" />
+      <File FileName="../PeakswareTest/Business Logic/FitUnitConverter.cs" Line="85" Column="116" />
+      <File FileName="../PeakswareTest/Data/FitImportFull.cs" Line="61" Column="222" />
+      <File FileName="../PeakswareTest/Models/DataChannel.cs" Line="11" Column="36" />
+      <File FileName="../PeakswareTest/Models/Lap.cs" Line="1" Column="8" />
+      <File FileName="../PeakswareTest/Models/Record.cs" Line="8" Column="48" />
+      <File FileName="../PeakswareTest/Models/Session.cs" Line="12" Column="2" />
+      <File FileName="../PeakswareTest/Models/Workout.cs" Line="21" Column="151" />
+      <File FileName="../PeakswareTest/Views/ConsoleView.cs" Line="18" Column="20" />
     </Files>
     <Pads>
       <Pad Id="MonoDevelop.UnitTesting.TestPad">

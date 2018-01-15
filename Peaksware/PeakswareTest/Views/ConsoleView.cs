@@ -12,9 +12,10 @@ namespace PeakswareTest.Views
         }
         public static string GetFileName(string msg)
         {
-            Console.WriteLine(msg);
+            Print(msg);
             string inputFile = Console.ReadLine();
             inputFile = ValidateFileName(inputFile);
+            // Revert to default if not specified
             if (inputFile != null && inputFile.Equals(""))
             {
                 inputFile = "files/2012-05-31-11-17-12.fit";
@@ -78,12 +79,13 @@ namespace PeakswareTest.Views
                     continue;
                 }
                 Dictionary<int, int> efforts = ThisDataChannel.MaxEfforts;
-                string Message = String.Format("{0,-10}", ThisDataChannel.DataType);
+                string message = String.Format("{0,-10}", ThisDataChannel.DataType);
                 foreach (KeyValuePair<int, int> effort in efforts)
                 {
-                    Message = String.Concat(Message, "\t" + String.Format("{0,-8}", effort.Value));
+                    // For small numbers of concats, this is more efficient than string builder or +=
+                    message = String.Concat(message, "\t" + String.Format("{0,-8}", effort.Value));
                 }
-                Console.WriteLine(Message);
+                Console.WriteLine(message);
             }
         }
     }
