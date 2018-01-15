@@ -83,7 +83,6 @@ namespace PeakswareTest.Business_Logic
 
         private static double ConvertFieldsToImperial(KeyValuePair<string, double> Metric)
         {
-            double NewDouble = 0;
             if (Metric.Key.Contains("Speed"))
             {
                 return Metric.Value * SPEED_MPH_FROM_MPS;

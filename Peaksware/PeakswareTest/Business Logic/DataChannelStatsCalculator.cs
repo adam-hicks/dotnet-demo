@@ -28,11 +28,6 @@ namespace PeakswareTest.Business_Logic
             return maxEfforts;
         }
 
-        public Dictionary<double, double> GetData()
-        {
-            return data;
-        }
-
         public void CalculateMaxEffort(int effortTimeMinutes)
         {
             int millisecondsPerMinute = 60 * 1000;

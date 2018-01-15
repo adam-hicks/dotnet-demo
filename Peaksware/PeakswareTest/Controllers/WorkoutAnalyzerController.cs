@@ -15,7 +15,7 @@ namespace PeakswareTest.Controllers
             Workout workout = RetrieveData();
             if (workout != null)
             {
-				FitUnitConverter.ConvertWorkoutToImperial(workout);
+                FitUnitConverter.ConvertWorkoutToImperial(workout);
                 DerivedDataExtractor.ExtractDataChannels(workout);
                 AnalyzeWorkout(workout);
                 ConsoleView.PrintWorkoutSummary(workout);
@@ -39,7 +39,7 @@ namespace PeakswareTest.Controllers
                         return null;
                     }
                     workout = FitImportFull.ImportData(inputFile);
-                } 
+                }
                 msg = "Specified file could not be read. Please try again: ";
             } while (workout == null);
             return workout;
@@ -52,8 +52,10 @@ namespace PeakswareTest.Controllers
             {
                 System.Predicate<DataChannel> dataTypeFilter = channel => channel.DataType.Equals(channelType);
                 DataChannel dataChannel = workout.DataChannels.Find(dataTypeFilter);
-                dataChannel.MaxEfforts = new DataChannelStatsCalculator(dataChannel.Data).CalculateAllEfforts();
-                ConsoleView.ReportEfforts(dataChannel);
+                if (dataChannel != null)
+                {
+                    dataChannel.MaxEfforts = new DataChannelStatsCalculator(dataChannel.Data).CalculateAllEfforts();
+                }
             }
         }
     }

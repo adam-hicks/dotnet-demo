@@ -48,37 +48,42 @@ namespace PeakswareTest.Views
 
         public static void PrintWorkoutSummary(Workout workout)
         {
-            Console.WriteLine("***********************");
-            Console.WriteLine("WORKOUT SUMMARY");
-            Console.WriteLine("***********************");
-            double seconds = (double)Convert.ToDecimal(workout.Session.SessionMetrics["TotalElapsedTime"]);
-            TimeSpan time = TimeSpan.FromSeconds(seconds);
-            string str = time.ToString(@"hh\:mm\:ss");
-            Console.WriteLine("Time:\t\t{0}", str);
-            Console.WriteLine("Distance:\t{0}", workout.Session.SessionMetrics["TotalDistance"]);
+            SectionHeader("WORKOUT SUMMARY");
+            ReportWorkout(workout);
+            SectionHeader("EFFORTS");
+            ReportEfforts(workout.DataChannels);
         }
 
-        public static void ReportEfforts(DataChannel dataChannel)
+        private static void SectionHeader(string HeaderTitle)
         {
-            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + dataChannel.DataType + "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            Dictionary<int, int> efforts = dataChannel.MaxEfforts;
-            string msg = GetMsg(dataChannel.DataType);
-            foreach (KeyValuePair<int, int> effort in efforts)
-            {
-                Console.WriteLine(msg, effort.Key, effort.Value);
-            }
+            Console.WriteLine();
+            Console.WriteLine("***********************");
+            Console.WriteLine(HeaderTitle);
+            Console.WriteLine("***********************");
         }
 
-        private static string GetMsg(string dataType)
+        private static void ReportWorkout(Workout workout)
         {
-            switch (dataType)
+            Console.WriteLine("Duration:\t\t{0}", workout.getDuration());
+            Console.WriteLine("Distance:\t\t{0} miles", workout.getTotalDistance());
+        }
+
+        public static void ReportEfforts(List<DataChannel> DataChannels)
+        {
+            Console.WriteLine("Type\t\t1 min\t\t5 min\t\t10 min\t\t15 min\t\t20 min\t\t");
+            foreach (DataChannel ThisDataChannel in DataChannels)
             {
-                case "Power":
-                    return "Best effort for {0} minutes during this ride was: {1} Watts!";
-                case "HeartRate":
-                    return "Max {0} minute heart rate for this ride was {1} BPM.";
-                default:
-                    return "Data channel name " + dataType + " not valid.";
+                if (ThisDataChannel.MaxEfforts == null)
+                {
+                    continue;
+                }
+                Dictionary<int, int> efforts = ThisDataChannel.MaxEfforts;
+                string Message = String.Format("{0,-10}", ThisDataChannel.DataType);
+                foreach (KeyValuePair<int, int> effort in efforts)
+                {
+                    Message = String.Concat(Message, "\t" + String.Format("{0,-8}", effort.Value));
+                }
+                Console.WriteLine(Message);
             }
         }
     }
