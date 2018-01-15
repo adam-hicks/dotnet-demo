@@ -44,10 +44,5 @@ namespace PeakswareTest.Controllers
             } while (workout == null);
             return workout;
         }
-
-        private static void AnalyzeWorkout(Workout workout)
-        {
-            
-        }
     }
 }
