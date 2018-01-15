@@ -22,18 +22,40 @@ namespace PeakswareTest.Business_Logic
         {
             foreach (Lap Lap in Laps)
             {
-                foreach (KeyValuePair<string, object> Metric in Lap.LapMetrics)
+                List<string> Keys = new List<string>(Lap.LapMetrics.Keys);
+                foreach (string Key in Keys)
                 {
-                    ConvertFieldsToImperial(Metric);
+                    double DoubleValue = 0;
+                    try
+                    {
+                        DoubleValue = (double)Convert.ToDecimal(Lap.LapMetrics[Key]);
+                    }
+                    catch (InvalidCastException)
+                    {
+                        continue;
+                    }
+                    double newValue = ConvertFieldsToImperial(new KeyValuePair<string, double>(Key, DoubleValue));
+                    Lap.LapMetrics[Key] = newValue;
                 }
             }
         }
 
         private static void ConvertSessionFields(Session ThisSession)
         {
-            foreach (KeyValuePair<string, object> Metric in ThisSession.SessionMetrics)
+            List<string> Keys = new List<string>(ThisSession.SessionMetrics.Keys);
+            foreach (string Key in Keys)
             {
-                ConvertFieldsToImperial(Metric);
+                double DoubleValue = 0;
+                try
+                {
+                    DoubleValue = (double)Convert.ToDecimal(ThisSession.SessionMetrics[Key]);
+                }
+                catch (InvalidCastException)
+                {
+                    continue;
+                }
+                double newValue = ConvertFieldsToImperial(new KeyValuePair<string, double>(Key, DoubleValue));
+                ThisSession.SessionMetrics[Key] = newValue;
             }
         }
 
@@ -41,38 +63,40 @@ namespace PeakswareTest.Business_Logic
         {
             foreach (Record ThisRecord in Records)
             {
-                foreach (KeyValuePair<string, object> Metric in ThisRecord.RecordMetrics)
+                List<string> Keys = new List<string>(ThisRecord.RecordMetrics.Keys);
+                foreach (string Key in Keys)
                 {
-                    ConvertFieldsToImperial(Metric);
+                    double DoubleValue = 0;
+                    try
+                    {
+                        DoubleValue = (double)Convert.ToDecimal(ThisRecord.RecordMetrics[Key]);
+                    }
+                    catch (InvalidCastException)
+                    {
+                        continue;
+                    }
+                    double newValue = ConvertFieldsToImperial(new KeyValuePair<string, double>(Key, DoubleValue));
+                    ThisRecord.RecordMetrics[Key] = newValue;
                 }
             }
         }
 
-        private static KeyValuePair<string, object> ConvertFieldsToImperial(KeyValuePair<string, object> Metric)
+        private static double ConvertFieldsToImperial(KeyValuePair<string, double> Metric)
         {
-            double DoubleValue = 0;
-            try
-            {
-                DoubleValue = (double)Convert.ToDecimal(Metric.Value);
-            }
-            catch (InvalidCastException)
-            {
-                return Metric;
-            }
-            KeyValuePair<string, object> NewMetric;
+            double NewDouble = 0;
             if (Metric.Key.Contains("Speed"))
             {
-                NewMetric = new KeyValuePair<string, object>(Metric.Key, DoubleValue * SPEED_MPH_FROM_MPS);
+                return Metric.Value * SPEED_MPH_FROM_MPS;
             }
-            else if (Metric.Key == "Distance")
+            else if (Metric.Key.Contains("Distance"))
             {
-                NewMetric = new KeyValuePair<string, object>(Metric.Key, DoubleValue * DISTANCE_METERS_TO_MILES);
+                return Metric.Value * DISTANCE_METERS_TO_MILES;
             }
             else if (Metric.Key.Contains("Altitude"))
             {
-                NewMetric = new KeyValuePair<string, object>(Metric.Key, DoubleValue * DISTANCE_METERS_TO_FEET);
+                return Metric.Value * DISTANCE_METERS_TO_FEET;
             }
-            return NewMetric;
+            return Metric.Value;
         }
     }
 }

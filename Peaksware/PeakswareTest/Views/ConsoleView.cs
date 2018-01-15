@@ -46,6 +46,18 @@ namespace PeakswareTest.Views
             Console.WriteLine(msg);
         }
 
+        public static void PrintWorkoutSummary(Workout workout)
+        {
+            Console.WriteLine("***********************");
+            Console.WriteLine("WORKOUT SUMMARY");
+            Console.WriteLine("***********************");
+            double seconds = (double)Convert.ToDecimal(workout.Session.SessionMetrics["TotalElapsedTime"]);
+            TimeSpan time = TimeSpan.FromSeconds(seconds);
+            string str = time.ToString(@"hh\:mm\:ss");
+            Console.WriteLine("Time:\t\t{0}", str);
+            Console.WriteLine("Distance:\t{0}", workout.Session.SessionMetrics["TotalDistance"]);
+        }
+
         public static void ReportEfforts(DataChannel dataChannel)
         {
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + dataChannel.DataType + "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");

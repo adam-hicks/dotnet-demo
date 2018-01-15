@@ -1,0 +1,23 @@
+***********************
+*===WORKOUT SUMMARY===*
+***********************
+Time:	    XXXXX
+Distance:	XXXXX
+
+***********************
+*=======EFFORTS=======*
+***********************
+Channel			    1 min	5 min	10 min	15 min	20 min
+Power (watts)		XXX		XXX		XXX		XXX		XXX
+Heart Rate (bpm)	XXX		XXX		XXX		XXX		XXX
+Speed (mph)		    XX.X	XX.X	XX.X	XX.X	XX.X
+
+***********************
+*======AVERAGES=======*
+***********************
+Channel			    Min		    Avg		Max
+Power (watts)		XXX 		XXX		XXX
+Heart Rate (bpm)	XXX 		XXX		XXX
+Speed (mph)		    XX.X		XX.X    XX.X
+Cadence (rpm)		XX		    XX		XX
+

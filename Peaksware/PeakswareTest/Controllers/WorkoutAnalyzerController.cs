@@ -18,6 +18,7 @@ namespace PeakswareTest.Controllers
 				FitUnitConverter.ConvertWorkoutToImperial(workout);
                 DerivedDataExtractor.ExtractDataChannels(workout);
                 AnalyzeWorkout(workout);
+                ConsoleView.PrintWorkoutSummary(workout);
             }
             else { ConsoleView.Print("Exiting..."); }
 

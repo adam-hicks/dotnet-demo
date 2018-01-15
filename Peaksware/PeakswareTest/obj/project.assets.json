@@ -2348,12 +2348,14 @@
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
+        "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/nuget.config",
         "/Users/adamhicks/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
       ],
       "sources": {
+        "/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/packages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
