@@ -7,7 +7,7 @@ namespace PeakswareTest.Business_Logic
 {
     public class DataChannelStatsCalculator
     {
-        private static Dictionary<double, double> data;
+        public Dictionary<double, double> data;
         private static Dictionary<int, int> maxEfforts;
 
         public DataChannelStatsCalculator(Dictionary<double, double> inputData)

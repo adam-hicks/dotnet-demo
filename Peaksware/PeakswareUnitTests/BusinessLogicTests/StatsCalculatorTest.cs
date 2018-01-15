@@ -22,7 +22,7 @@ namespace Tests
         [Test]
         public void TestDataIsSeeded()
         {
-            CollectionAssert.IsNotEmpty(calculator.GetData());
+            CollectionAssert.IsNotEmpty(calculator.data);
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Tests
         private void SeedData()
         {
             int dataSize = 5000;
-            Dictionary<double, int> data = new Dictionary<double, int>();
+            Dictionary<double, double> data = new Dictionary<double, double>();
             for (double i = 0; i <= dataSize; i++)
             {
                 if (i < dataSize / 2)

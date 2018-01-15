@@ -1,13 +1,13 @@
 ﻿<Properties StartupConfiguration="{ADA037EE-7CC0-49A9-B5B0-30A5BBBFAD7A}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Models/Workout.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/WorkoutAnalyzerController.cs">
     <Files>
-      <File FileName="Controllers/WorkoutAnalyzerController.cs" Line="21" Column="56" />
-      <File FileName="Views/ConsoleView.cs" Line="52" Column="13" />
-      <File FileName="Business Logic/FitUnitConverter.cs" Line="99" Column="32" />
-      <File FileName="Models/Workout.cs" Line="20" Column="23" />
+      <File FileName="Controllers/WorkoutAnalyzerController.cs" Line="59" Column="1" />
+      <File FileName="Views/ConsoleView.cs" Line="55" Column="1" />
+      <File FileName="Business Logic/FitUnitConverter.cs" Line="86" Column="1" />
+      <File FileName="Models/Workout.cs" Line="30" Column="39" />
       <File FileName="Data/FitImport.cs" Line="73" Column="1" NotebookId="1" />
       <File FileName="Models/DataChannel.cs" Line="11" Column="36" NotebookId="1" />
-      <File FileName="Business Logic/DataChannelStatsCalculator.cs" Line="30" Column="1" NotebookId="1" />
+      <File FileName="Business Logic/DataChannelStatsCalculator.cs" Line="28" Column="1" NotebookId="1" />
       <File FileName="../PeakswareUnitTests/BusinessLogicTests/StatsCalculatorTest.cs" Line="88" Column="2" NotebookId="1" />
       <File FileName="OutputFormat.txt" Line="24" Column="1" NotebookId="1" />
     </Files>
