@@ -1,18 +1,13 @@
 ﻿<Properties StartupConfiguration="{8F8163B4-BA8D-4BAC-8A2F-DD710A37E0FA}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="../PeakswareTest/Controllers/WorkoutAnalyzerController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../PeakswareTest/Business Logic/FitUnitConverter.cs">
     <Files>
-      <File FileName="../PeakswareTest/Controllers/WorkoutAnalyzerController.cs" Line="18" Column="1" />
+      <File FileName="../PeakswareTest/Controllers/WorkoutAnalyzerController.cs" Line="18" Column="26" />
       <File FileName="BusinessLogicTests/StatsCalculatorTest.cs" Line="81" Column="18" />
       <File FileName="../PeakswareTest/Business Logic/DataChannelStatsCalculator.cs" Line="31" Column="45" />
-      <File FileName="../PeakswareTest/Data/FitImportFull.cs" Line="66" Column="46" />
-      <File FileName="../PeakswareTest/Views/ConsoleView.cs" Line="33" Column="63" />
-      <File FileName="../PeakswareTest/Business Logic/FitUnitConverter.cs" Line="17" Column="1" />
-      <File FileName="../PeakswareTest/Controllers/DerivedDataExtractor.cs" Line="36" Column="32" />
-      <File FileName="../PeakswareTest/Models/Lap.cs" Line="8" Column="21" NotebookId="1" />
-      <File FileName="../PeakswareTest/Models/Record.cs" Line="8" Column="48" NotebookId="1" />
-      <File FileName="../PeakswareTest/Models/Workout.cs" Line="20" Column="2" NotebookId="1" />
-      <File FileName="../PeakswareTest/Models/Session.cs" Line="2" Column="34" NotebookId="1" />
-      <File FileName="../PeakswareTest/Models/DataChannel.cs" Line="12" Column="42" NotebookId="1" />
+      <File FileName="../PeakswareTest/Data/FitImportFull.cs" Line="44" Column="48" />
+      <File FileName="../PeakswareTest/Views/ConsoleView.cs" Line="18" Column="38" />
+      <File FileName="../PeakswareTest/Controllers/DerivedDataExtractor.cs" Line="13" Column="56" />
+      <File FileName="../PeakswareTest/Business Logic/FitUnitConverter.cs" Line="18" Column="20" NotebookId="1" />
     </Files>
     <Pads>
       <Pad Id="MonoDevelop.UnitTesting.TestPad">

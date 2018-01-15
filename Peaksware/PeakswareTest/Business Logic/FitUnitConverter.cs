@@ -15,7 +15,7 @@ namespace PeakswareTest.Business_Logic
         {
             ConvertLapFields(workout.Laps);
             ConvertSessionFields(workout.Session);
-            ConvertDataChannelFields(workout.DataChannels);
+            ConvertRecordFields(workout.Records);
         }
 
         private static void ConvertLapFields(List<Lap> Laps)
@@ -37,13 +37,13 @@ namespace PeakswareTest.Business_Logic
             }
         }
 
-        private static void ConvertDataChannelFields(List<DataChannel> DataChannels)
+        private static void ConvertRecordFields(List<Record> Records)
         {
-            foreach (DataChannel ThisDataChannel in DataChannels)
+            foreach (Record ThisRecord in Records)
             {
-                foreach (KeyValuePair<double, double> datum in ThisDataChannel.Data)
+                foreach (KeyValuePair<string, object> Metric in ThisRecord.RecordMetrics)
                 {
-                    
+                    ConvertFieldsToImperial(Metric);
                 }
             }
         }
