@@ -1,13 +1,5 @@
 ﻿<Properties StartupConfiguration="{8F8163B4-BA8D-4BAC-8A2F-DD710A37E0FA}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="../PeakswareTest/Business Logic/FitUnitConverter.cs">
-    <Files>
-      <File FileName="BusinessLogicTests/StatsCalculatorTest.cs" Line="77" Column="18" />
-      <File FileName="../PeakswareTest/Controllers/WorkoutAnalyzerController.cs" Line="18" Column="26" />
-      <File FileName="../PeakswareTest/Views/ConsoleView.cs" Line="24" Column="9" />
-      <File FileName="../PeakswareTest/Business Logic/FitUnitConverter.cs" Line="8" Column="11" />
-      <File FileName="../PeakswareTest/Business Logic/DataChannelStatsCalculator.cs" Line="15" Column="9" NotebookId="1" />
-      <File FileName="BusinessLogicTests/FitUnitConverterTest.cs" Line="3" Column="20" NotebookId="1" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="MonoDevelop.UnitTesting.TestPad">
         <State name="__root__">
