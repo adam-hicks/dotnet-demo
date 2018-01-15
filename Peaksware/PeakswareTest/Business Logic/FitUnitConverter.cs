@@ -14,8 +14,8 @@ namespace PeakswareTest.Business_Logic
         public static void ConvertWorkoutToImperial(Workout workout)
         {
             ConvertLapFields(workout.Laps);
-            ConvertSessionFields();
-            ConvertDataChannelFields();
+            ConvertSessionFields(workout.Session);
+            ConvertDataChannelFields(workout.DataChannels);
         }
 
         private static void ConvertLapFields(List<Lap> Laps)
@@ -29,14 +29,23 @@ namespace PeakswareTest.Business_Logic
             }
         }
 
-        private static void ConvertSessionFields()
+        private static void ConvertSessionFields(Session ThisSession)
         {
-            throw new NotImplementedException();
+            foreach (KeyValuePair<string, object> Metric in ThisSession.SessionMetrics)
+            {
+                ConvertFieldsToImperial(Metric);
+            }
         }
 
-        private static void ConvertDataChannelFields()
+        private static void ConvertDataChannelFields(List<DataChannel> DataChannels)
         {
-            throw new NotImplementedException();
+            foreach (DataChannel ThisDataChannel in DataChannels)
+            {
+                foreach (KeyValuePair<double, double> datum in ThisDataChannel.Data)
+                {
+                    
+                }
+            }
         }
 
         private static KeyValuePair<string, object> ConvertFieldsToImperial(KeyValuePair<string, object> Metric)

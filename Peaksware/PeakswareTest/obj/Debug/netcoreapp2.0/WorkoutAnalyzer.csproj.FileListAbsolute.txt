@@ -3,9 +3,9 @@
 /Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/bin/Debug/netcoreapp2.0/WorkoutAnalyzer.runtimeconfig.dev.json
 /Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/bin/Debug/netcoreapp2.0/WorkoutAnalyzer.dll
 /Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/bin/Debug/netcoreapp2.0/WorkoutAnalyzer.pdb
+/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/obj/Debug/netcoreapp2.0/WorkoutAnalyzer.csprojResolveAssemblyReference.cache
 /Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/obj/Debug/netcoreapp2.0/WorkoutAnalyzer.csproj.CoreCompileInputs.cache
 /Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/obj/Debug/netcoreapp2.0/WorkoutAnalyzer.AssemblyInfoInputs.cache
 /Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/obj/Debug/netcoreapp2.0/WorkoutAnalyzer.AssemblyInfo.cs
 /Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/obj/Debug/netcoreapp2.0/WorkoutAnalyzer.dll
 /Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/obj/Debug/netcoreapp2.0/WorkoutAnalyzer.pdb
-/Users/adamhicks/Programming/dotnet_demo/Peaksware/PeakswareTest/obj/Debug/netcoreapp2.0/WorkoutAnalyzer.csprojResolveAssemblyReference.cache

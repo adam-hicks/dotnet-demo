@@ -1,110 +1,1 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Dynastream.Fit;
-using PeakswareTest.Models;
-
-namespace PeakswareTest.Data
-{
-    public static class FitImportFull
-    {
-
-
-        static Dictionary<ushort, int> mesgCounts = new Dictionary<ushort, int>();
-        private static System.DateTime? _start;
-        private static Workout workout = new Workout();
-
-        public static Workout ImportData(string filename)
-        {
-            // Attempt to open .FIT file
-            if (!System.IO.File.Exists(filename))
-            {
-                return null;
-            }
-            using (var fitSource = new FileStream(filename, FileMode.Open))
-            {
-                Decode decodeDemo = new Decode();
-                MesgBroadcaster mesgBroadcaster = new MesgBroadcaster();
-
-                // Connect the Broadcaster to our event source (in this case the Decoder)
-                decodeDemo.MesgEvent += mesgBroadcaster.OnMesg;
-
-                // Subscribe to message events of interest by connecting to the Broadcaster
-                mesgBroadcaster.MesgEvent += OnMesg;
-                mesgBroadcaster.FileIdMesgEvent += OnFileIDMesg;
-
-                bool status = decodeDemo.IsFIT(fitSource) && decodeDemo.CheckIntegrity(fitSource);
-                // Process the file
-                if (status)
-                {
-                    decodeDemo.Read(fitSource);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            return workout;
-        }
-
-        static void OnMesg(object sender, MesgEventArgs e)
-        {
-            var sessionMesg = (SessionMesg)e.mesg;
-            foreach (Field field in e.mesg.Fields)
-            {
-                for (int j = 0; j < field.GetNumValues(); j++)
-                {
-                    StoreDataInAppropriateModel(e.mesg.Name, field);
-                }
-            }
-
-            if (mesgCounts.ContainsKey(e.mesg.Num))
-            {
-                mesgCounts[e.mesg.Num]++;
-            }
-            else
-            {
-                mesgCounts.Add(e.mesg.Num, 1);
-            }
-        }
-
-        private static void StoreDataInAppropriateModel(string dataType, Field field)
-        {
-            switch (dataType)
-            {
-                case "Session":
-                    Session session = new Session();
-                    session.SessionMetrics.Add(field.GetName(), field.GetValue());
-                    workout.Session = session;
-                    break;
-                case "Lap":
-                    Lap lap = new Lap();
-                    lap.LapMetrics.Add(field.GetName(), field.GetValue());
-                    workout.Laps.Add(lap);
-                    break;
-                case "Record":
-                    Record record = new Record();
-                    record.RecordMetrics.Add(field.GetName(), field.GetValue());
-                    workout.Records.Add(record);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        static double GetTimeOffset(System.DateTime date)
-        {
-            if (_start == null)
-                return 0;
-
-            return date.Subtract(_start.Value).TotalMilliseconds;
-        }
-
-        static void OnFileIDMesg(object sender, MesgEventArgs e)
-        {
-            FileIdMesg myFileId = (FileIdMesg)e.mesg;
-
-            _start = myFileId.GetTimeCreated().GetDateTime();
-        }
-    }
-}
+﻿using System; using System.Collections.Generic; using System.IO; using Dynastream.Fit; using PeakswareTest.Models;  namespace PeakswareTest.Data {     public static class FitImportFull     {           static Dictionary<ushort, int> mesgCounts = new Dictionary<ushort, int>();         private static System.DateTime? _start;         private static Workout workout = new Workout();          public static Workout ImportData(string filename)         {             // Attempt to open .FIT file             if (!System.IO.File.Exists(filename))             {                 return null;             }             using (var fitSource = new FileStream(filename, FileMode.Open))             {                 Decode decodeDemo = new Decode();                 MesgBroadcaster mesgBroadcaster = new MesgBroadcaster();                  // Connect the Broadcaster to our event source (in this case the Decoder)                 decodeDemo.MesgEvent += mesgBroadcaster.OnMesg;                 decodeDemo.MesgDefinitionEvent += mesgBroadcaster.OnMesgDefinition;                  // Subscribe to message events of interest by connecting to the Broadcaster                 //mesgBroadcaster.MesgEvent += OnMesg;                  mesgBroadcaster.FileIdMesgEvent += OnFileIDMesg;                 mesgBroadcaster.RecordMesgEvent += OnRecordMesg;                 mesgBroadcaster.SessionMesgEvent += OnSessionMesg;                 mesgBroadcaster.LapMesgEvent += OnLapMesg;                  bool status = decodeDemo.IsFIT(fitSource) && decodeDemo.CheckIntegrity(fitSource);                 // Process the file                 if (status)                 {                     decodeDemo.Read(fitSource);                 }                 else                 {                     return null;                 }             }             workout.Timestamp = _start;             return workout;         }          static void OnSessionMesg(object sender, MesgEventArgs e)         {             var sessionMesg = (SessionMesg)e.mesg;  			Session session = new Session();             foreach (Field field in e.mesg.Fields)             {                 for (int j = 0; j < field.GetNumValues(); j++)                 {                     session.SessionMetrics.Add(field.GetName(), field.GetValue());                 }             } 			workout.Session = session;         }          static void OnLapMesg(object sender, MesgEventArgs e)         {             var lapMesg = (LapMesg)e.mesg;              foreach (Field field in e.mesg.Fields)             {                 for (int j = 0; j < field.GetNumValues(); j++)                 {                     Lap lap = new Lap();                     lap.LapMetrics.Add(field.GetName(), field.GetValue());                     lap.Timestamp = (lapMesg.GetTimestamp().GetDateTime());                     workout.Laps.Add(lap);                 }             }         }          static void OnRecordMesg(object sender, MesgEventArgs e)         {             var recordMesg = (RecordMesg)e.mesg;              foreach (Field field in e.mesg.Fields)             {                 for (int j = 0; j < field.GetNumValues(); j++)                 {                     Record record = new Record();                     record.RecordMetrics.Add(field.GetName(), field.GetValue());                     record.Timestamp = (recordMesg.GetTimestamp().GetDateTime());                     workout.Records.Add(record);                 }             }         }          //static void OnMesg(object sender, MesgEventArgs e)         //{         //    foreach (Field field in e.mesg.Fields)         //    {         //        for (int j = 0; j < field.GetNumValues(); j++)         //        {         //            StoreDataInAppropriateModel(e.mesg, field);         //        }         //    }          //    if (mesgCounts.ContainsKey(e.mesg.Num))         //    {         //        mesgCounts[e.mesg.Num]++;         //    }         //    else         //    {         //        mesgCounts.Add(e.mesg.Num, 1);         //    }         //}          //private static void StoreDataInAppropriateModel(Mesg Messsge, Field field)         //{         //    switch (Messsge.Name)         //    {         //        case "Session":         //            var sessionMesg = (SessionMesg)Messsge;         //            Session session = new Session();         //            session.SessionMetrics.Add(field.GetName(), field.GetValue());         //            session.Timestamp = (sessionMesg.GetTimestamp().GetDateTime());         //            workout.Session = session;         //            break;         //        case "Lap":         //            var lapMesg = (LapMesg)Messsge;         //            Lap lap = new Lap();         //            lap.LapMetrics.Add(field.GetName(), field.GetValue());         //            lap.Timestamp = (lapMesg.GetTimestamp().GetDateTime());         //            workout.Laps.Add(lap);         //            break;         //        case "Record":         //            var recordMesg = (RecordMesg)Messsge;         //            Record record = new Record();         //            record.RecordMetrics.Add(field.GetName(), field.GetValue());         //            record.Timestamp = (recordMesg.GetTimestamp().GetDateTime());         //            workout.Records.Add(record);         //            break;         //        default:         //            break;         //    }         //}          static double GetTimeOffset(System.DateTime date)         {             if (_start == null)                 return 0;              return date.Subtract(_start.Value).TotalMilliseconds;         }          static void OnFileIDMesg(object sender, MesgEventArgs e)         {             FileIdMesg myFileId = (FileIdMesg)e.mesg;              if (myFileId.GetTimeCreated() != null)             {                 _start = myFileId.GetTimeCreated().GetDateTime();             }         }     } }   

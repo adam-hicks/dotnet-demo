@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 
 namespace PeakswareTest.Models
 {
     public class Workout
     {
+        public DateTime? Timestamp { get; set; }
         public Session Session { get; set; }
         public List<Lap> Laps { get; set; }
         public List<Record> Records { get; set; }

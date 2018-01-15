@@ -15,7 +15,8 @@ namespace PeakswareTest.Controllers
             Workout workout = RetrieveData();
             if (workout != null)
             {
-                ConvertUnits(workout);
+                DerivedDataExtractor.ExtractDataChannels(workout);
+                FitUnitConverter.ConvertWorkoutToImperial(workout);
                 AnalyzeWorkout(workout);
             }
             else { ConsoleView.Print("Exiting..."); }
